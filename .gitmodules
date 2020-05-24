@@ -1,0 +1,3 @@
+[submodule "src/metrobus_api"]
+	path = src/metrobus_api
+	url = https://github.com/siht/metrobus_api.git
