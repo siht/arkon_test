@@ -2,10 +2,10 @@
 FROM python:3.8.3-slim-buster
 
 ARG MEDIA_PATH
-ARG STATIC_PATH
+ARG STATIC_ROOT
 ARG SOCKETS_PATH
 ENV MEDIA_PATH=${MEDIA_PATH:-/app/media/}
-ENV STATIC_PATH=${STATIC_PATH:-/app/static/}
+ENV STATIC_ROOT=${STATIC_ROOT:-/app/static/}
 ENV SOCKETS_PATH=${SOCKETS_PATH:-/app/sockets/}
 
 WORKDIR /app
@@ -25,4 +25,4 @@ COPY . /app/
 RUN pip install -r requirements.txt \
 	&& python manage.py collectstatic --noinput
 
-CMD ["python", "manage.py", "runserver"]
+CMD ["./manage.py", "runserver"]
