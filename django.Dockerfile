@@ -22,8 +22,7 @@ RUN apt-get update \
 
 COPY . /app/
 
-RUN pip install -r requirements.txt \
-	&& python manage.py collectstatic --noinput
+RUN pip install -r requirements.txt
 
 EXPOSE 8000
 
