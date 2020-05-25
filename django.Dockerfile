@@ -25,4 +25,6 @@ COPY . /app/
 RUN pip install -r requirements.txt \
 	&& python manage.py collectstatic --noinput
 
-CMD ["./manage.py", "runserver"]
+EXPOSE 8000
+
+CMD ["./manage.py", "runserver", "0.0.0.0:8000"]
