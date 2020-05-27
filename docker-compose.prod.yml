@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  web_service:
+    command: uwsgi --socket ${SOCKETS_PATH}/${PROJECT_NAME}.sock --module ${UWSGI_PARENT_MODULE_NAME}.wsgi --uid ${UID_FOR_SOCKETS} --gid ${GID_FOR_SOCKETS}
+  server:
+    env_file:
+        - ".env_shared"
+        - ".env_nginx"
+    image: "nginx"
+    volumes:
+      - "data_for_serve:${SERVER_DATA}"
+      - "./config/nginx/mysite.template:/etc/nginx/conf.d/mysite.template"
+      - "./config/nginx/nginx_conf.template:/etc/nginx/nginx_conf.template"
+    environment:
+      PROJECT_NAME: ${PROJECT_NAME}
+      DOLLAR: $$
+    command: /bin/bash -c "((envsubst < /etc/nginx/nginx_conf.template > /etc/nginx/nginx.conf) && (envsubst < /etc/nginx/conf.d/mysite.template > /etc/nginx/conf.d/default.conf)) && exec nginx -g 'daemon off;'"
+    ports:
+      - "${NGINX_OUT_PORT}:${NGINX_INTERNAL_PORT}"
+    depends_on:
+      - web_service

@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  db:
+    env_file:
+      - ".env_postgres"
+    image: "postgres:latest"
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data/"
+      - "./config/init.sh:/docker-entrypoint-initdb.d/init.sh"
+  web_service:
+    env_file:
+        - ".env_shared"
+        - ".env_django"
+    build:
+      context: "./src/metrobus_api"
+      dockerfile: "../../django.Dockerfile"
+      args:
+        - "MEDIA_PATH=${MEDIA_PATH}"
+        - "STATIC_ROOT=${STATIC_ROOT}"
+        - "SOCKETS_PATH=${SOCKETS_PATH}"
+    volumes:
+      - "data_for_serve:${SERVER_DATA}"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
+  data_for_serve:
