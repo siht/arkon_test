@@ -20,3 +20,5 @@ services:
       - "${NGINX_OUT_PORT}:${NGINX_INTERNAL_PORT}"
     depends_on:
       - web_service
+  pulling_app:
+    command: ["./entrypoint.sh"]
