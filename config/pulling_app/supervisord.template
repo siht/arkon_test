@@ -1,0 +1,37 @@
+[supervisord]
+loglevel = info
+pidfile = /tmp/supervisord.pid
+nodaemon = true
+minfds = 1024
+minprocs = 200
+user = root
+identifier = supervisor
+directory = /tmp
+nocleanup = true
+childlogdir = /tmp
+strip_ansi = false
+
+[program:celeryworker]
+command=celery -A pull_data worker -l info
+directory=${DIRECTORY}
+user=root
+numprocs=1
+autostart=${AUTOSTART}
+autorestart=${AUTORESTART}
+startsecs=10
+stopwaitsecs = 600
+killasgroup=true
+priority=998
+
+
+[program:celerybeat]
+command=celery -A pull_data beat -l info
+directory=${DIRECTORY}
+user=root
+numprocs=1
+autostart=${AUTOSTART}
+autorestart=${AUTORESTART}
+startsecs=10
+stopwaitsecs = 600
+killasgroup=true
+priority=999
