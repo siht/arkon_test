@@ -23,7 +23,22 @@ services:
       - "data_for_serve:${SERVER_DATA}"
     depends_on:
       - db
+  message_broker:
+    image: "rabbitmq:3"
+    volumes:
+      - "rabbitmq_data:/var/lib/rabbitmq"
+  pulling_app:
+    env_file:
+      - ".env_pulling_app"
+    build:
+      context: "."
+      dockerfile: "./pulling_app.Dockerfile"
+    depends_on:
+      - db
+      - message_broker
+    command: [":"]
 
 volumes:
   postgres_data:
   data_for_serve:
+  rabbitmq_data:

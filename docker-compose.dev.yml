@@ -9,3 +9,6 @@ services:
       - "./src/metrobus_api:/app"
     ports:
       - "8000:8000"
+  message_broker:
+    ports:
+      - "5673:5672"
