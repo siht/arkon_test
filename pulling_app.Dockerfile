@@ -21,9 +21,7 @@ RUN apt-get update \
 
 COPY ./src/metrobus_pull_data /app/
 RUN pip install -r requirements.txt
-COPY ./config/pulling_app/celery_worker.template /app/celery_worker.template
-COPY ./config/pulling_app/celery_beat.template /app/celery_beat.template
-COPY ./config/pulling_app/supervisord.conf /usr/local/etc/supervisord.conf
+COPY ./config/pulling_app/supervisord.template /app/supervisord.template
 COPY ./config/pulling_app/entrypoint.sh /app/entrypoint.sh
 
 RUN chmod 777 ./entrypoint.sh
