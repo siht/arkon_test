@@ -1,31 +1,99 @@
-# Prueba técnica: Data pipeline
+# GET DATA OF CDMX METROBUS
 
-## Descripción
+this project pull data every hour from "datos abiertos de la Ciudad de México", and get the neccesary data to implement an API. more information:
 
-Desarrollar un pipeline de análisis de datos utilizando los datos abiertos de la Ciudad de México correspondientes a la ubicación de las unidades del metrobús durante la última hora para obtener un histórico de la posición en la que se encuentra cada unidad que pueda ser consultado mediante un API Rest filtrando por unidad o por alcaldía.
+- [about API](https://github.com/siht/metrobus_api)
+- [about pull data app](https://github.com/siht/metrobus_pull_data)
 
-## Requerimientos y reglas de negocio
+## DEPENDENCIES
 
-- Presentar un diagrama con el diseño de su solución
-- Consultar periódicamente la fuente de datos
-- Obtener la alcaldía correspondiente a cada posición
-- Almacenar la información en una base de datos
-- Diseñar e implementar un API que permita consultar la información almacenada, con las siguientes características:
-  - Obtener una lista de unidades disponibles
-  - Consultar los el historial de ubicaciones/fechas de una unidad dado su ID
-  - Obtener una lista de alcaldías disponibles
-  - Obtener una lista de unidades que hayan estado dentro de una alcaldía
+- docker
+- docker-compose
 
-## Código
+### ENVIRONMENT FILES
 
-- El candidato tendrá completa libertad de elegir el stack tecnológico
-- Incluir comentarios en el código
-- Manejar control de versiones
-- Utilizar docker para empaquetar su(s) servicio(s)
+some of these configuration may be repeated
 
-## Puntos extra
+#### .env_django
 
-- Implementar el API usando GraphQL
-- Las configuraciones necesarias para desplegar su(s) servicio(s) en kubernetes
-- Implementar una parte de su solución usando programación funcional
-- Incluir pruebas unitarias
+[read about](https://github.com/siht/metrobus_api)
+
+#### .env_nginx
+
+this file only require the port that serves data into container
+
+- NGINX_INTERNAL_PORT
+
+#### .env_postgres
+
+this file may contains (if you want to do changes to root use), read [postgres documentation](https://hub.docker.com/_/postgres)
+
+- POSTGRES_USER
+- POSTGRES_DB
+- POSTGRES_PASSWORD
+
+but must contains for configuration of database that use the two apps
+
+- DJANGO_USER
+- DJANGO_PASSWORD
+- DJANGO_DATABASE_NAME
+
+#### .env_pulling_app
+
+[read about](https://github.com/siht/metrobus_pull_data)
+
+#### .env_shared
+
+contains configurations related to files that will be served by nginx which are in django, and the sockets served by uwsgi.
+
+- SERVER_DATA
+- MEDIA_PATH
+- STATIC_PATH
+- SOCKETS_PATH
+- UID_FOR_SOCKETS
+- GID_FOR_SOCKETS
+
+#### .env
+
+contains data for docker-compose
+
+- UWSGI_PARENT_MODULE_NAME
+- SERVER_DATA
+- MEDIA_PATH
+- STATIC_ROOT
+- SOCKETS_PATH
+- UID_FOR_SOCKETS
+- GID_FOR_SOCKETS
+- PROJECT_NAME
+- NGINX_INTERNAL_PORT
+- NGINX_OUT_PORT
+
+## HOW TO INSTALL
+
+set all .env files and run
+
+```sh
+docker-compose up
+```
+
+that command doesnt run the pulling app, so you need to initialize manually the database only run
+
+```sh
+docker-compose run web_service ./manage.py migrate
+docker-compose run web_service ./manage.py loaddata metrobus_history/fixtures/districts.json
+docker-compose run web_service ./manage.py loaddata metrobus_history/fixtures/district_limit_points.json
+```
+
+once that you initialize database you may stop all containers
+
+```sh
+docker-compose down
+```
+
+## RUN APPLICATIONS
+
+once initialized all only left run
+
+```sh
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+```
