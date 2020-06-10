@@ -80,7 +80,7 @@ contains data for docker-compose
 
 ### INIT APPLICATION
 
-set all .env files, change permisions 746 for file "./config/nginx/entrypoint.sh" and run
+set all .env files, change permisions 746 for files "./config/nginx/entrypoint.sh", "./config/api_uwsgi_conf/entrypoint.sh" and run
 
 ```sh
 docker-compose up

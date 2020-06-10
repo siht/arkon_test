@@ -2,7 +2,11 @@ version: '3'
 
 services:
   web_service:
-    command: uwsgi --socket ${SOCKETS_PATH}/${PROJECT_NAME}.sock --module ${UWSGI_PARENT_MODULE_NAME}.wsgi --uid ${UID_FOR_SOCKETS} --gid ${GID_FOR_SOCKETS}
+    volumes:
+      - "./config/api_uwsgi_conf/entrypoint.sh:/app/entrypoint.sh"
+    env_file:
+      - ".env"
+    command: ["./entrypoint.sh"]
   server:
     env_file:
         - ".env_shared"
