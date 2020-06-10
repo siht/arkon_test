@@ -10,6 +10,14 @@ this project pull data every hour from "datos abiertos de la Ciudad de México",
 - docker
 - docker-compose
 
+### GET THIS CODE
+
+run in terminal
+
+```sh
+git clone --recurse-submodules https://github.com/siht/arkon_test.git
+```
+
 ### ENVIRONMENT FILES
 
 some of these configuration may be repeated
@@ -70,7 +78,7 @@ contains data for docker-compose
 
 ## HOW TO INSTALL
 
-set all .env files and run
+set all .env files, change permisions 746 for file "./config/nginx/entrypoint.sh" and run
 
 ```sh
 docker-compose up
