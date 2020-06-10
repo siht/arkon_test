@@ -5,6 +5,14 @@ this project pull data every hour from "datos abiertos de la Ciudad de México",
 - [about API](https://github.com/siht/metrobus_api)
 - [about pull data app](https://github.com/siht/metrobus_pull_data)
 
+## GET THIS CODE
+
+run in terminal
+
+```sh
+git clone --recurse-submodules https://github.com/siht/arkon_test.git
+```
+
 ## DEPENDENCIES
 
 - docker
@@ -70,7 +78,9 @@ contains data for docker-compose
 
 ## HOW TO INSTALL
 
-set all .env files and run
+### INIT APPLICATION
+
+set all .env files, change permisions 746 for files "./config/nginx/entrypoint.sh", "./config/api_uwsgi_conf/entrypoint.sh" and run
 
 ```sh
 docker-compose up
@@ -84,7 +94,7 @@ docker-compose run web_service ./manage.py loaddata metrobus_history/fixtures/di
 docker-compose run web_service ./manage.py loaddata metrobus_history/fixtures/district_limit_points.json
 ```
 
-once that you initialize database you may stop all containers
+once that you initialize database you must stop all containers
 
 ```sh
 docker-compose down

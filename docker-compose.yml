@@ -7,7 +7,7 @@ services:
     image: "postgres:latest"
     volumes:
       - "postgres_data:/var/lib/postgresql/data/"
-      - "./config/init.sh:/docker-entrypoint-initdb.d/init.sh"
+      - "./config/postgres/init.sh:/docker-entrypoint-initdb.d/init.sh"
   web_service:
     env_file:
         - ".env_shared"
